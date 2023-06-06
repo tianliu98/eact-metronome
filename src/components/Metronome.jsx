@@ -49,6 +49,10 @@ const Metronome = () => {
     if (beat < 16) setBeat((prevBeat) => prevBeat + 1);
   };
 
+  const onBpmChange = (e) => {
+    setBpm(e.target.value);
+  }
+
   useEffect(() => {
     setDotRefs((prev) => {
       return Array(beat)
@@ -59,6 +63,7 @@ const Metronome = () => {
 
   return (
     <div>
+      <div>Hello</div>
       <div className="dots" ref={dotsContainerRef}>
         {Array.from({ length: beat }, (v, i) => i).map((v, i) => (
           <div
@@ -76,6 +81,7 @@ const Metronome = () => {
         <button onClick={subBeat}>-</button>
         <input value={beat} onChange={beatChangeHandler} />
         <button onClick={addBeat}>+</button>
+        <input type="text" value={bpm} onChange={onBpmChange}/>
       </div>
     </div>
   );
