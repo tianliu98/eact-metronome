@@ -63,6 +63,7 @@ const Metronome = () => {
 
   return (
     <div>
+      <div>Hello</div>
       <div className="dots" ref={dotsContainerRef}>
         {Array.from({ length: beat }, (v, i) => i).map((v, i) => (
           <div
