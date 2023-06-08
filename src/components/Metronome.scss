@@ -1,0 +1,26 @@
+.metronome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20vh;
+
+    .circle {
+        height: 50px;
+        width: 50px;
+        background-color: #555;
+        border-radius: 50%;
+    }
+
+    .dots {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .first-dot {
+        background-color: red;
+    }
+}
