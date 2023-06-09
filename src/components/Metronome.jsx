@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState, createRef } from "react";
 import "./Metronome.scss";
 import BeatBlock from "./BeatBlock/BeatBlock";
+import PlayButton from "./PlayButton/PlayButton";
+import InputBar from "./InputBar/InputBar";
 
 const Metronome = () => {
     const dotsContainerRef = useRef(null);
@@ -9,6 +11,7 @@ const Metronome = () => {
     const [beat, setBeat] = useState(4);
     const [dotRefs, setDotRefs] = useState([]);
     const [activeIdx, setActiveIdx] = useState(-1);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     const dotLooper = (duration, dots) => {
         const numDots = dots.length;
@@ -24,6 +27,7 @@ const Metronome = () => {
     };
 
     const onPlay = () => {
+        setIsPlaying(true);
         clearInterval(timer);
         dotLooper((60 / bpm) * 1000, dotsContainerRef.current.children);
         const newTimer = setInterval(() => {
@@ -33,6 +37,7 @@ const Metronome = () => {
     };
 
     const onStop = () => {
+        setIsPlaying(false);
         clearInterval(timer);
     };
 
@@ -67,21 +72,20 @@ const Metronome = () => {
                     <BeatBlock
                         key={i}
                         ref={dotRefs[i]}
-                        isPlaying={i === activeIdx ? true : false}
+                        isActive={i === activeIdx ? true : false}
                     />
                 ))}
             </div>
-            <button onClick={onPlay}>Play</button>
-            <button onClick={onStop}>Stop</button>
+            <PlayButton onPlay={onPlay} onStop={onStop} isPlaying={isPlaying} />
             <div className="setting">
                 <div className="beats-setting">
                     <button onClick={subBeat}>-</button>
-                    <input value={beat} onChange={beatChangeHandler} />
+                    <InputBar value={beat} onChange={beatChangeHandler} />
                     <button onClick={addBeat}>+</button>
                 </div>
 
                 <div className="bpm-setting">
-                    <input type="text" value={bpm} onChange={onBpmChange} />
+                    <InputBar value={bpm} onChange={onBpmChange} />
                 </div>
             </div>
         </div>

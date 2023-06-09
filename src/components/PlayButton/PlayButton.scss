@@ -1,0 +1,19 @@
+.play-button-container {
+    .play-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        background-color: #d89b00;
+        text-decoration: none;
+        border: 1px solid aqua;
+        transition: border 0.2s ease-in;
+
+        &.playing {
+            transition: border 0.2s ease-in;
+            border: 1px solid red;
+        }
+    }
+}

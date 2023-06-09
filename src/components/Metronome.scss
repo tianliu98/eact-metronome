@@ -23,4 +23,22 @@
     .first-dot {
         background-color: red;
     }
+
+    .beats-setting {
+        width: 150px;
+        display: flex;
+        flex-direction: row;
+        margin-top: 20px;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+
+        button {
+            flex: 0 0 auto; // don't grow, don't shrink, auto width
+        }
+    }
+
+    .bpm-setting {
+        margin-top: 20px;
+    }
 }
