@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 // import tick from "../../sound/tick-sound.wav";
 import "./BeatBlock.scss";
 
