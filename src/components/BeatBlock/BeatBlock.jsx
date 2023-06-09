@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-// import tick from "../../sound/tick-sound.wav";
 import "./BeatBlock.scss";
 
 export default function BeatBlock({ isActive }) {
     const [level, setLevel] = useState(1);
-    // const tickSound = useRef(new Audio(tick));
     const onChangeColor = () => {
         console.log("click");
         setLevel((prevLevel) => {
