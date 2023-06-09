@@ -10,7 +10,6 @@ const Metronome = () => {
     // const tickSound = useRef(new Audio(tick));
     const tickSoundBuffer = useRef(null);
     const audioContext = useRef(null);
-    const audioBuffer = useRef(null);
     const [timer, setTimer] = useState(null);
     const [bpm, setBpm] = useState(30);
     const [beat, setBeat] = useState(4);
