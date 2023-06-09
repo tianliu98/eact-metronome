@@ -20,12 +20,14 @@ const Metronome = () => {
         const gap = duration / dots.length;
         setActiveIdx(0); // Set the active index to 0.
         tickSound.current.play();
+        tickSound.current.currentTime = 0; // Reset sound playback to the start (To fix mobile broswer issue)
 
         for (let i = 1; i < numDots; i++) {
             // start from 1 since we've played the 0 index sound
             setTimeout(() => {
                 setActiveIdx(i);
                 tickSound.current.play();
+                tickSound.current.currentTime = 0; // Reset sound playback to the start
             }, gap * i);
         }
     };

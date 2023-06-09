@@ -16,10 +16,6 @@ export default function BeatBlock({ isActive }) {
         });
     };
 
-    // useEffect(() => {
-    //     if (isActive) tickSound.current.play();
-    // }, [isActive]);
-
     return (
         <div
             className={`beat-block ${isActive ? "playing" : ""}`}
