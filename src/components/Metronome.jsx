@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState, createRef } from "react";
 import "./Metronome.scss";
+import tick from "../sound/tick-sound.wav";
 import BeatBlock from "./BeatBlock/BeatBlock";
 import PlayButton from "./PlayButton/PlayButton";
 import InputBar from "./InputBar/InputBar";
 
 const Metronome = () => {
     const dotsContainerRef = useRef(null);
+    const tickSound = useRef(new Audio(tick));
     const [timer, setTimer] = useState(null);
     const [bpm, setBpm] = useState(30);
     const [beat, setBeat] = useState(4);
@@ -17,11 +19,13 @@ const Metronome = () => {
         const numDots = dots.length;
         const gap = duration / dots.length;
         setActiveIdx(0); // Set the active index to 0.
+        tickSound.current.play();
 
         for (let i = 1; i < numDots; i++) {
             // start from 1 since we've played the 0 index sound
             setTimeout(() => {
                 setActiveIdx(i);
+                tickSound.current.play();
             }, gap * i);
         }
     };

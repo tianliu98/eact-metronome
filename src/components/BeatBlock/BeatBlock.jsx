@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import tick from "../../sound/tick-sound.wav";
+// import tick from "../../sound/tick-sound.wav";
 import "./BeatBlock.scss";
 
 export default function BeatBlock({ isActive }) {
     const [level, setLevel] = useState(1);
-    const tickSound = useRef(new Audio(tick));
+    // const tickSound = useRef(new Audio(tick));
     const onChangeColor = () => {
         console.log("click");
         setLevel((prevLevel) => {
@@ -16,9 +16,10 @@ export default function BeatBlock({ isActive }) {
         });
     };
 
-    useEffect(() => {
-        if (isActive) tickSound.current.play();
-    }, [isActive]);
+    // useEffect(() => {
+    //     if (isActive) tickSound.current.play();
+    // }, [isActive]);
+
     return (
         <div
             className={`beat-block ${isActive ? "playing" : ""}`}
