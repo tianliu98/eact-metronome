@@ -7,9 +7,7 @@ import InputBar from "./InputBar/InputBar";
 
 const Metronome = () => {
     const dotsContainerRef = useRef(null);
-    // const tickSound = useRef(new Audio(tick));
-    const tickSoundBuffer = useRef(null);
-    const audioContext = useRef(null);
+    const tickSound = useRef(new Audio(tick));
     const [timer, setTimer] = useState(null);
     const [bpm, setBpm] = useState(30);
     const [beat, setBeat] = useState(4);
@@ -17,51 +15,16 @@ const Metronome = () => {
     const [activeIdx, setActiveIdx] = useState(-1);
     const [isPlaying, setIsPlaying] = useState(false);
 
-    useEffect(() => {
-        // Initialize the Web Audio context
-        audioContext.current = new (window.AudioContext ||
-            window.webkitAudioContext)();
-
-        // Load the tick sound
-        fetch(tick)
-            .then((response) => response.arrayBuffer())
-            .then((arrayBuffer) =>
-                audioContext.current.decodeAudioData(arrayBuffer)
-            )
-            .then((audioBuffer) => {
-                tickSoundBuffer.current = audioBuffer;
-            });
-    }, []);
-
-    const playSound = () => {
-        const source = audioContext.current.createBufferSource();
-        source.buffer = tickSoundBuffer.current;
-        source.connect(audioContext.current.destination);
-        source.start();
-    };
-
-    const dotLooper = (duration, dots) => {
-        const numDots = dots.length;
-        const gap = duration / dots.length;
-        setActiveIdx(0); // Set the active index to 0.
-        playSound();
-
-        for (let i = 1; i < numDots; i++) {
-            // start from 1 since we've played the 0 index sound
-            setTimeout(() => {
-                setActiveIdx(i);
-                playSound();
-            }, gap * i);
-        }
-    };
-
     const onPlay = () => {
         setIsPlaying(true);
         clearInterval(timer);
-        dotLooper((60 / bpm) * 1000, dotsContainerRef.current.children);
+        const gap = ((60 / bpm) * 1000) / beat;
+
         const newTimer = setInterval(() => {
-            dotLooper((60 / bpm) * 1000, dotsContainerRef.current.children);
-        }, (60 / bpm) * 1000);
+            tickSound.current.play();
+            setActiveIdx((prev) => (prev + 1) % beat);
+        }, gap);
+
         setTimer(newTimer);
     };
 
