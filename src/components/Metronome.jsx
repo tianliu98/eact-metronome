@@ -47,7 +47,7 @@ const Metronome = () => {
         }
 
         return () => clearInterval(intervalRef.current);
-    }, [isPlaying, tickBuffer]);
+    }, [isPlaying, tickBuffer, beat, bpm]);
 
     const onStop = () => {
         setIsPlaying(false);
