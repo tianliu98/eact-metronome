@@ -1,12 +1,42 @@
 import React, { useEffect, useState, useRef } from "react";
-import tick from "../../sound/tick-sound.wav";
 import "./BeatBlock.scss";
+import tick from "../../sound/tick-sound.wav";
 
-export default function BeatBlock({ isPlaying }) {
+const loadSound = async (url) => {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await new AudioContext().decodeAudioData(arrayBuffer);
+
+    return audioBuffer;
+};
+
+export default function BeatBlock({ isActive, index, audioCtx }) {
     const [level, setLevel] = useState(1);
-    const tickSound = useRef(new Audio(tick));
+
+    const [tickBuffer, setTickBuffer] = useState(null);
+    const isBufferLoaded = useRef(false);
+
+    useEffect(() => {
+        loadSound(tick).then((buffer) => {
+            setTickBuffer(buffer);
+            isBufferLoaded.current = true;
+        });
+    }, []);
+
+    useEffect(() => {
+        if (isActive && isBufferLoaded.current) {
+            try {
+                const source = audioCtx.createBufferSource();
+                source.buffer = tickBuffer;
+                source.connect(audioCtx.destination);
+                source.start();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }, [isActive, tickBuffer, audioCtx]);
+
     const onChangeColor = () => {
-        console.log("click");
         setLevel((prevLevel) => {
             if (prevLevel === 3) {
                 return 1;
@@ -16,27 +46,24 @@ export default function BeatBlock({ isPlaying }) {
         });
     };
 
-    useEffect(() => {
-        if (isPlaying) tickSound.current.play();
-    }, [isPlaying]);
     return (
         <div
-            className={`beat-block ${isPlaying ? "playing" : ""}`}
+            className={`beat-block ${isActive ? "playing" : ""}`}
             onClick={onChangeColor}
         >
             <div
                 className={`level-3 ${level > 2 ? "active" : ""} ${
-                    isPlaying ? "flashing" : ""
+                    isActive ? "flashing" : ""
                 }`}
             ></div>
             <div
                 className={`level-2 ${level > 1 ? "active" : ""} ${
-                    isPlaying ? "flashing" : ""
+                    isActive ? "flashing" : ""
                 }`}
             ></div>
             <div
                 className={`level-1 ${level > 0 ? "active" : ""} ${
-                    isPlaying ? "flashing" : ""
+                    isActive ? "flashing" : ""
                 }`}
             ></div>
         </div>

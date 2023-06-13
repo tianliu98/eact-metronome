@@ -1,26 +1,43 @@
+$color-inactive: #d89b00;
+$color-active: aqua;
 .beat-block {
     border: 1px solid black;
     width: 40px;
     height: 60px;
     display: flex;
     flex-direction: column;
-    background-color: gray;
+    background-color: #4b2d01;
+    border-radius: 5px;
+    border: 2px solid $color-inactive;
 }
 
-.level-1, .level-2, .level-3 {
+.level-1,
+.level-2,
+.level-3 {
     height: 33.333%;
-
     &.active {
-        background-color: blue;
+        background-color: $color-inactive;
         transition: background-color 0.3s ease-out;
+        border-top: 0;
         &.flashing {
-            background-color: aqua;
+            background-color: $color-active;
             box-shadow: 0px 0px 10px aqua;
             transition: background-color 0s;
         }
     }
 }
 
-.level-1, .level-2 {
-     border-top: 1px solid red; 
+.level-1,
+.level-2 {
+    border-top: 2px solid $color-inactive;
+}
+
+.level-1 {
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.level-3 {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
