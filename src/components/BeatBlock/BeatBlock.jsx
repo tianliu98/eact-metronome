@@ -3,7 +3,6 @@ import "./BeatBlock.scss";
 import tick from "../../sound/tick-sound.wav";
 
 const loadSound = async (url) => {
-    console.log("Sound Loading...");
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await new AudioContext().decodeAudioData(arrayBuffer);
@@ -37,8 +36,6 @@ export default function BeatBlock({ isActive, index, audioCtx }) {
             } catch (error) {
                 console.log(error);
             }
-
-            console.log(`Block ${index} is playing..`);
         }
     }, [isActive, tickBuffer, index, audioCtx]);
     //ee
