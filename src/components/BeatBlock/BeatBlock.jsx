@@ -1,10 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./BeatBlock.scss";
+import tick from "../../sound/tick-sound.wav";
 
-export default function BeatBlock({ isActive }) {
+const loadSound = async (url) => {
+    console.log("Sound Loading...");
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await new AudioContext().decodeAudioData(arrayBuffer);
+
+    return audioBuffer;
+};
+
+export default function BeatBlock({ isActive, index, audioCtx }) {
     const [level, setLevel] = useState(1);
+
+    //cc
+    // const audioCtxRef = useRef(new AudioContext());
+    const [tickBuffer, setTickBuffer] = useState(null);
+    const isBufferLoaded = useRef(false);
+
+    useEffect(() => {
+        // const audioCtxRef = audioCtx;
+        loadSound(tick).then((buffer) => {
+            setTickBuffer(buffer);
+            isBufferLoaded.current = true;
+        });
+    }, []);
+
+    useEffect(() => {
+        if (isActive && isBufferLoaded.current) {
+            try {
+                const source = audioCtx.createBufferSource();
+                source.buffer = tickBuffer;
+                source.connect(audioCtx.destination);
+                source.start();
+            } catch (error) {
+                console.log(error);
+            }
+
+            console.log(`Block ${index} is playing..`);
+        }
+    }, [isActive, tickBuffer, index, audioCtx]);
+    //ee
+
     const onChangeColor = () => {
-        console.log("click");
         setLevel((prevLevel) => {
             if (prevLevel === 3) {
                 return 1;
