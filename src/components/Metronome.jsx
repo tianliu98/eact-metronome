@@ -5,32 +5,53 @@ import BeatBlock from "./BeatBlock/BeatBlock";
 import PlayButton from "./PlayButton/PlayButton";
 import InputBar from "./InputBar/InputBar";
 
+const loadSound = async (url) => {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await new AudioContext().decodeAudioData(arrayBuffer);
+
+    return audioBuffer;
+};
+
 const Metronome = () => {
     const dotsContainerRef = useRef(null);
-    const tickSound = useRef(new Audio(tick));
-    const [timer, setTimer] = useState(null);
+    // const tickSound = useRef(new Audio(tick));
+    const intervalRef = useRef(null);
     const [bpm, setBpm] = useState(30);
     const [beat, setBeat] = useState(4);
     const [dotRefs, setDotRefs] = useState([]);
     const [activeIdx, setActiveIdx] = useState(-1);
     const [isPlaying, setIsPlaying] = useState(false);
+    const audioCtxRef = useRef(new AudioContext());
+    const [tickBuffer, setTickBuffer] = useState(null);
+
+    useEffect(() => {
+        loadSound(tick).then(setTickBuffer);
+    }, []);
 
     const onPlay = () => {
         setIsPlaying(true);
-        clearInterval(timer);
-        const gap = ((60 / bpm) * 1000) / beat;
-
-        const newTimer = setInterval(() => {
-            tickSound.current.play();
-            setActiveIdx((prev) => (prev + 1) % beat);
-        }, gap);
-
-        setTimer(newTimer);
+        audioCtxRef.current.resume();
     };
+
+    useEffect(() => {
+        if (isPlaying && tickBuffer) {
+            const gap = ((60 / bpm) * 1000) / beat;
+            intervalRef.current = setInterval(() => {
+                const source = audioCtxRef.current.createBufferSource();
+                source.buffer = tickBuffer;
+                source.connect(audioCtxRef.current.destination);
+                source.start();
+                setActiveIdx((prev) => (prev + 1) % beat);
+            }, gap);
+        }
+
+        return () => clearInterval(intervalRef.current);
+    }, [isPlaying, tickBuffer]);
 
     const onStop = () => {
         setIsPlaying(false);
-        clearInterval(timer);
+        clearInterval(intervalRef.current);
     };
 
     const beatChangeHandler = (e) => {
