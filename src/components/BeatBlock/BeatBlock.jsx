@@ -13,13 +13,10 @@ const loadSound = async (url) => {
 export default function BeatBlock({ isActive, index, audioCtx }) {
     const [level, setLevel] = useState(1);
 
-    //cc
-    // const audioCtxRef = useRef(new AudioContext());
     const [tickBuffer, setTickBuffer] = useState(null);
     const isBufferLoaded = useRef(false);
 
     useEffect(() => {
-        // const audioCtxRef = audioCtx;
         loadSound(tick).then((buffer) => {
             setTickBuffer(buffer);
             isBufferLoaded.current = true;
@@ -37,8 +34,7 @@ export default function BeatBlock({ isActive, index, audioCtx }) {
                 console.log(error);
             }
         }
-    }, [isActive, tickBuffer, index, audioCtx]);
-    //ee
+    }, [isActive, tickBuffer, audioCtx]);
 
     const onChangeColor = () => {
         setLevel((prevLevel) => {

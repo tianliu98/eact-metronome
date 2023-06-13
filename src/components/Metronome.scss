@@ -24,21 +24,32 @@
         background-color: red;
     }
 
-    .beats-setting {
-        width: 150px;
+    .setting {
         display: flex;
-        flex-direction: row;
-        margin-top: 20px;
-        align-items: center;
+        flex-direction: column;
         justify-content: center;
-        gap: 5px;
+        align-items: center;
 
-        button {
-            flex: 0 0 auto; // don't grow, don't shrink, auto width
+        .beats-setting {
+            width: 250px;
+            display: flex;
+            flex-direction: row;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+
+            button {
+                // flex: 0 0 auto; // don't grow, don't shrink, auto width
+                height: 40px;
+                width: 40px;
+                font-size: 30px;
+            }
         }
-    }
 
-    .bpm-setting {
-        margin-top: 20px;
+        .bpm-setting {
+            width: 250px;
+            margin-top: 20px;
+        }
     }
 }
